@@ -36,15 +36,24 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    working_directory: ~/UdaPeople/fontend
     steps:
-      - checkout
+      - checkout:
+          path: ~/UdaPeople
       - restore_cache:
           keys: [frontend-build]
       - run:
+          name: Install npm
+          command: |
+            npm install
+      - run:
+          name: run lint
+          command: |
+            npm run lint
+      - run:
           name: Build front-end
           command: |
-            cd frontend && npm run build
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -54,9 +63,18 @@ jobs:
       - image: circleci/node:13.8.0
     working_directory: ~/UdaPeople
     steps:
-      - checkout
+      - checkout:
+          path: ~/UdaPeople
       - restore_cache:
           keys: [backend-build]
+      - run:
+          name: Install npm
+          command: |
+            npm install
+      - run:
+          name: run lint
+          command: |
+            npm run lint
       - run:
           name: Back-end build
           command: |
