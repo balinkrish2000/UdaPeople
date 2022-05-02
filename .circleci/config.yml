@@ -36,9 +36,10 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/
+    working_directory: ~/frontend
     steps:
-      - checkout
+      - checkout:
+          path: ~/frontend
       - restore_cache:
           keys: [frontend-build]
       - run:
@@ -53,9 +54,10 @@ jobs:
   build-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/
+    working_directory: ~/backend
     steps:
-      - checkout
+      - checkout:
+          path: ~/backend
       - restore_cache:
           keys: [backend-build]
       - run:
