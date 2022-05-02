@@ -36,7 +36,7 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople/frontend
+    working_directory: ~/UdaPeople
     steps:
       - checkout
       - restore_cache:
@@ -53,7 +53,7 @@ jobs:
   build-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople/backend
+    working_directory: ~/UdaPeople
     steps:
       - checkout
       - restore_cache:
