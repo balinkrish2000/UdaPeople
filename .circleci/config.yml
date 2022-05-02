@@ -39,7 +39,7 @@ jobs:
     working_directory: ~/frontend
     steps:
       - checkout:
-          path: ~/frontend
+          path: ~/circleci
       - restore_cache:
           keys: [frontend-build]
       - run:
@@ -57,7 +57,7 @@ jobs:
     working_directory: ~/backend
     steps:
       - checkout:
-          path: ~/backend
+          path: ~/circleci
       - restore_cache:
           keys: [backend-build]
       - run:
