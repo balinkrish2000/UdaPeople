@@ -69,6 +69,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
                 
@@ -77,6 +78,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
             
@@ -85,6 +87,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
 
@@ -93,6 +96,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
 
