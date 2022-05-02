@@ -36,7 +36,7 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/circleci/frontend
+    working_directory: ~/circleci
     steps:
       - checkout
       - restore_cache:
@@ -53,7 +53,7 @@ jobs:
   build-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/circleci/backend
+    working_directory: ~/circleci
     steps:
       - checkout
       - restore_cache:
