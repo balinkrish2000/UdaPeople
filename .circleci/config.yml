@@ -217,7 +217,7 @@ jobs:
             ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
             apk add --update ansible
             apk add --no-cache gzip
-            apk add --no-chache tar
+            apk add --no-cache tar
       - run:
           name: Configure server
           command: |
