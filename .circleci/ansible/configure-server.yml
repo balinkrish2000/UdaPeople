@@ -3,6 +3,7 @@
 - name: "configuration play." 
   hosts: web
   user: ubuntu
+  banner_timeout: 200
   become: true
   become_method: sudo
   become_user: root  
