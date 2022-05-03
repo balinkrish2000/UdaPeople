@@ -201,6 +201,7 @@ jobs:
     working_directory: ~/UdaPeople
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
@@ -221,7 +222,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook -i ~/UdaPeople/.circleci/ansible/inventory.txt configure-server.yml
       - destroy-environment     
 
   run-migrations:
