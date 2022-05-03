@@ -198,7 +198,6 @@ jobs:
     docker:
       # Docker image here that supports Ansible
       - image: python:3.7-alpine3.11
-    working_directory: ~/UdaPeople
     steps:
       # Checkout code from git
       - checkout
