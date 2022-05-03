@@ -3,8 +3,6 @@
 - name: "configuration play." 
   hosts: web
   user: ubuntu
-  connect_kwargs:
-    banner_timeout: 60
   become: true
   become_method: sudo
   become_user: root  
