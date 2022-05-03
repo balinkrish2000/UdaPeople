@@ -130,7 +130,7 @@ jobs:
       - run:
           name: Front-end scan
           command: |
-            cd frontend && npm audit
+            cd frontend && npm audit fix
 
   scan-backend:
     docker:
@@ -147,7 +147,7 @@ jobs:
       - run:
           name: Back-end scan
           command: |
-            cd backend && npm audit
+            cd backend && npm audit fix
 
   deploy-infrastructure:
     docker:
