@@ -52,6 +52,10 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - persist_to_workspace:
+          root: ~/UdaPeople
+          paths:
+            - frontend/*
 
   build-backend:
     docker:
@@ -72,24 +76,44 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - persist_to_workspace:
+          root: ~/UdaPeople
+          paths:
+            - backend/*
 
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - attach_workspace:
+          at: ~/UdaPeople
       # Checkout code from git
       - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [frontend-build]
       # Your job code here
+      - run:
+          name: Front-end test
+          command: |
+            cd frontend && npm run test
                 
   test-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - attach_workspace:
+          at: ~/UdaPeople
       # Checkout code from git
       - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [backend-build]
       # Your job code here
+      - run:
+          name: Back-end test
+          command: |
+            cd backend && npm run test
             
   scan-frontend:
     docker:
