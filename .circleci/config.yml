@@ -186,10 +186,10 @@ jobs:
           command: |
             yum install -y tar gzip
       - persist_to_workspace:
-          root: ~/
+          root: ~/UdaPeople
           paths:
             #- project/.circleci/ansible/inventory.txt
-            - UdaPeople/.circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
       - run:
           name: print inventory file
           command: |
@@ -209,15 +209,10 @@ jobs:
               fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
       # attach workspace
       - attach_workspace:
-          at: ~/
+          at: ~/UdaPeople
       - run:
           name: Install dependencies
           command: |
-            /usr/local/bin/python -m pip install --upgrade pip            
-            apk add python curl
-            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-            unzip awscli-bundle.zip
-            ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
             apk add --update ansible
             apk add --no-cache gzip
             apk add --no-cache tar
