@@ -213,7 +213,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip install paramiko
+            pip install paramiko --upgrade
             apk add python curl
             curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
             unzip awscli-bundle.zip
