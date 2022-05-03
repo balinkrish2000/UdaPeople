@@ -53,7 +53,7 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
       - persist_to_workspace:
-          root: ~/tmp
+          root: ~/UdaPeople
           paths:
             - frontend/*
 
@@ -77,7 +77,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
       - persist_to_workspace:
-          root: ~/tmp
+          root: ~/UdaPeople
           paths:
             - backend/*
 
@@ -87,9 +87,8 @@ jobs:
     working_directory: ~/UdaPeople
     steps:
       - attach_workspace:
-          at: ~/tmp
+          at: ~/UdaPeople
       # Checkout code from git
-      - checkout
       # Restore from cache
       - restore_cache:
           keys: [frontend-build]
@@ -105,9 +104,8 @@ jobs:
     working_directory: ~/UdaPeople
     steps:
       - attach_workspace:
-          at: ~/tmp
+          at: ~/UdaPeople
       # Checkout code from git
-      - checkout
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
