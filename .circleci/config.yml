@@ -194,7 +194,7 @@ jobs:
       - run:
           name: print inventory file
           command: |
-            echo ~/UdaPeople/.circleci/ansible/inventory.txt
+            cat ~/UdaPeople/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
       - destroy-environment
 
