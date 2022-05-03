@@ -84,6 +84,7 @@ jobs:
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
+    working_directory: ~/UdaPeople
     steps:
       - attach_workspace:
           at: ~/UdaPeople
@@ -101,6 +102,7 @@ jobs:
   test-backend:
     docker:
       - image: circleci/node:13.8.0
+    working_directory: ~/UdaPeople
     steps:
       - attach_workspace:
           at: ~/UdaPeople
