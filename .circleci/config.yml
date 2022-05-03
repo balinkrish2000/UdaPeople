@@ -206,16 +206,22 @@ jobs:
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
-              fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
+          fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
       # attach workspace
       - attach_workspace:
           at: ~/UdaPeople
       - run:
           name: Install dependencies
           command: |
+            apk update
+            apk upgrade
+            apk add unzip
+            apk add curl
+            /usr/local/bin/python -m pip install --upgrade pip
             apk add --update ansible
-            apk add --no-cache gzip
-            apk add --no-cache tar
+            ansible --version
+            pip install awscli --upgrade
+            aws --version
       - run:
           name: Configure server
           command: |
