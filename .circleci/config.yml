@@ -40,7 +40,7 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    # working_directory: ~/UdaPeople
     steps:
       - checkout
       - restore_cache:
@@ -56,15 +56,15 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - persist_to_workspace:
-          root: ~/UdaPeople
-          paths:
-            - frontend/*
+      # - persist_to_workspace:
+      #     root: ~/UdaPeople
+      #     paths:
+      #       - frontend/*
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    # working_directory: ~/UdaPeople
     steps:
       - checkout
       - restore_cache:
@@ -80,19 +80,20 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - persist_to_workspace:
-          root: ~/UdaPeople
-          paths:
-            - backend/*
+      # - persist_to_workspace:
+      #     root: ~/UdaPeople
+      #     paths:
+      #       - backend/*
 
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    # working_directory: ~/UdaPeople
     steps:
-      - attach_workspace:
-          at: ~/UdaPeople
+      # - attach_workspace:
+      #     at: ~/UdaPeople
       # Checkout code from git
+      - checkout
       # Restore from cache
       - restore_cache:
           keys: [frontend-build]
@@ -105,11 +106,12 @@ jobs:
   test-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    # working_directory: ~/UdaPeople
     steps:
-      - attach_workspace:
-          at: ~/UdaPeople
+      # - attach_workspace:
+      #     at: ~/UdaPeople
       # Checkout code from git
+      - checkout
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
@@ -122,11 +124,12 @@ jobs:
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    # working_directory: ~/UdaPeople
     steps:
       # Checkout code from git
-      - attach_workspace:
-          at: ~/UdaPeople
+      - checkout
+      # - attach_workspace:
+      #     at: ~/UdaPeople
       # Restore from cache
       - restore_cache:
           keys: [frontend-build]
@@ -139,11 +142,12 @@ jobs:
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/UdaPeople
+    # working_directory: ~/UdaPeople
     steps:
       # Checkout code from git
-      - attach_workspace:
-          at: ~/UdaPeople
+      - checkout
+      # - attach_workspace:
+      #     at: ~/UdaPeople
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
@@ -158,22 +162,22 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: Ensure back-end infrastructure exists
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/backend.yml \
-      #         --tags project=your-tag \
-      #         --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
-      # - run:
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         --tags project=your-tag \
-      #         --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project=your-tag \
+              --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=your-tag \
+              --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -247,7 +251,6 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix --force
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
@@ -360,25 +363,25 @@ cleanup:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - deploy-infrastructure:
-      # #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #     filters:
-      #       branches:
-      #         only: [test-feature-branch]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      - run-migrations
-      #     requires: [configure-infrastructure]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
