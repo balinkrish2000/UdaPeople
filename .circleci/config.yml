@@ -186,7 +186,7 @@ jobs:
           command: |
             yum install -y tar gzip
       - persist_to_workspace:
-          root: ~/UdaPeople/.circleci/ansible/inventory.txt
+          root: ~/UdaPeople/.circleci/ansible
           paths:
             #- project/.circleci/ansible/inventory.txt
             - .
@@ -209,7 +209,7 @@ jobs:
           fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
       # attach workspace
       - attach_workspace:
-          at: ~/project/.circleci/ansible/inventory.txt
+          at: ~/project/.circleci/ansible
       - run:
           name: Install dependencies
           command: |
