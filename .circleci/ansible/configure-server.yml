@@ -3,7 +3,6 @@
 - name: "configuration play." 
   hosts: web
   user: ubuntu
-  banner_timeout: 200
   become: true
   become_method: sudo
   become_user: root  
@@ -26,14 +25,14 @@
     - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
 
   pre_tasks:
+    - name: "install python for Ansible."
+      become: yes
+      raw: apt install -y python3
+      
     - name: "wait 120 seconds for target connection to become reachable/usable."
       wait_for_connection:
         delay: 20
         timeout: 60
-
-    - name: "install python for Ansible."
-      become: yes
-      raw: apt install -y python3
 
   roles:
     - configure-server
