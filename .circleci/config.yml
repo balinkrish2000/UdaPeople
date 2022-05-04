@@ -192,7 +192,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip install ansible
+            apk add ansible
+            ansible --version
       #     command: |
       #       apk update
       #       apk upgrade
