@@ -192,6 +192,9 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
+      - ansible-playbook/playbook:
+          inventory: ~/project/.circleci/ansible/inventory.txt
+          playbook: ~/project/.circleci/ansible/configure-server.yml
       # - run:
       #     name: Install dependencies
           # command: |
@@ -207,13 +210,8 @@ jobs:
       #       ansible --version
       #       pip install awscli --upgrade
       #       aws --version
-      - run:
-          name: Configure server
-          playbook:
-            inventory: 
-              ~/project/.circleci/ansible/inventory.txt
-            paybook:
-              ~/project/.circleci/ansible/configure-server.yml
+      # - run:
+      #     name: Configure server
           # command: |
           #   cd .circleci/ansible
           #   export ANSIBLE_HOST_KEY_CHECKING=False
