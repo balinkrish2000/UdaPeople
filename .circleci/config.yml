@@ -377,7 +377,7 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
             then
               aws cloudformation delete-stack --stack-name UdaPeople-frontend-${OldWorkflowID}
               aws cloudformation delete-stack --stack-name UdaPeople-backend-${OldWorkflowID}
