@@ -392,11 +392,10 @@ workflows:
           filters:
             branches:
               only: [test-feature-branch]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      - run-migrations:
+      - configure-infrastructure:
           requires: [deploy-infrastructure]
-          # requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
       - deploy-backend:
