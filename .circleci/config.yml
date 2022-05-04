@@ -16,24 +16,28 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      - run:
+          name: Destroy front end s3 bucket
+          when: on_fail
+          command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force  
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
-    parameters:
+    #parameters:
       # Add parameter here     
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS=$(curl --insecure  https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+             cd ~/project/backend
+             npm install
+             npm run migration:revert
             fi
             
 jobs:
@@ -305,7 +309,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update curl
+            apk add --update curl nodejs npm
+            pip install awscli --upgrade
       - attach_workspace:
           at: ~/project/.circleci/ansible
       - run:
@@ -331,7 +336,8 @@ jobs:
             else
               return 1
             fi
-      # Here's where you will add some code to rollback on failure  
+      - destroy-environment
+      - revert-migrations
 
   cloudfront-update:
     docker:
@@ -388,16 +394,15 @@ workflows:
               only: [test-feature-branch]
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
-      # - run-migrations:
+      - run-migrations:
+          requires: [deploy-infrastructure]
           # requires: [configure-infrastructure]
       - deploy-frontend:
-            requires: [deploy-infrastructure]
-      #     requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       - smoke-test:
-            requires: [deploy-frontend]
-      #     requires: [deploy-backend, deploy-frontend]
+          requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
