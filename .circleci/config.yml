@@ -208,7 +208,6 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible --version
             cd .circleci/ansible
             export ANSIBLE_HOST_KEY_CHECKING=False
             export ANSIBLE_RECORD_HOST_KEYS=False
