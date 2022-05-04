@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs: 
-  ansible-playbook: orbss/ansible-playbook@0.0.5
+  ansible: orbss/ansible@0.2.3
 
 commands:
   destroy-environment:
@@ -192,9 +192,8 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      - ansible-playbook/playbook:
-          inventory: ~/project/.circleci/ansible/inventory.txt
-          playbook: ~/project/.circleci/ansible/configure-server.yml
+      - ansible/ansible-playbook:
+          ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
       # - run:
       #     name: Install dependencies
           # command: |
