@@ -189,11 +189,10 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --no-cache ansible
-            ansible --version
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --no-cache ansible
       #     command: |
       #       apk update
       #       apk upgrade
@@ -207,6 +206,7 @@ jobs:
       - run:
           name: Configure server
           command: |
+            ansible --version
             cd .circleci/ansible
             export ANSIBLE_HOST_KEY_CHECKING=False
             export ANSIBLE_RECORD_HOST_KEYS=False
