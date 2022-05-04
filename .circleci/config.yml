@@ -147,20 +147,20 @@ jobs:
               --tags project=your-tag \
               --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
-      - run:
-          name: Ensure front-end infrastructure exist
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/frontend.yml \
-              --tags project=your-tag \
-              --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
-      - run:
-          name: Add back-end ip to ansible inventory
-          command: |
-            aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --output text >> .circleci/ansible/inventory.txt
+      # - run:
+      #     name: Ensure front-end infrastructure exist
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file .circleci/files/frontend.yml \
+      #         --tags project=your-tag \
+      #         --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
+      # - run:
+      #     name: Add back-end ip to ansible inventory
+      #     command: |
+      #       aws ec2 describe-instances \
+      #       --query 'Reservations[*].Instances[*].PublicIpAddress' \
+      #       --output text >> .circleci/ansible/inventory.txt
       - run:
           name: Install tar utility
           command: |
@@ -189,18 +189,18 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      - run:
-          name: Install dependencies
-          command: |
-            apk update
-            apk upgrade
-            apk add unzip
-            apk add curl
-            /usr/local/bin/python -m pip install --upgrade pip
-            apk add --update ansible
-            ansible --version
-            pip install awscli --upgrade
-            aws --version
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk update
+      #       apk upgrade
+      #       apk add unzip
+      #       apk add curl
+      #       /usr/local/bin/python -m pip install --upgrade pip
+      #       apk add --update ansible
+      #       ansible --version
+      #       pip install awscli --upgrade
+      #       aws --version
       - run:
           name: Configure server
           command: |
@@ -337,18 +337,18 @@ cleanup:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
             branches:
               only: [test-feature-branch]
