@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs: 
-  ansible: orbss/ansible@0.2.3
-
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -192,13 +189,11 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      - ansible/ansible-playbook:
-          ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
-      # - run:
-      #     name: Install dependencies
-          # command: |
-          #   apk add ansible
-          #   ansible --version
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache ansible
+            ansible --version
       #     command: |
       #       apk update
       #       apk upgrade
@@ -209,13 +204,13 @@ jobs:
       #       ansible --version
       #       pip install awscli --upgrade
       #       aws --version
-      # - run:
-      #     name: Configure server
-          # command: |
-          #   cd .circleci/ansible
-          #   export ANSIBLE_HOST_KEY_CHECKING=False
-          #   export ANSIBLE_RECORD_HOST_KEYS=False
-          #   ansible-playbook -i inventory.txt configure-server.yml
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            export ANSIBLE_HOST_KEY_CHECKING=False
+            export ANSIBLE_RECORD_HOST_KEYS=False
+            ansible-playbook -i inventory.txt configure-server.yml
       #- destroy-environment     
 
   run-migrations:
