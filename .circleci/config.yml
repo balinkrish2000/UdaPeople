@@ -40,7 +40,6 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    # working_directory: ~/UdaPeople
     steps:
       - checkout
       - restore_cache:
@@ -48,23 +47,20 @@ jobs:
       - run:
           name: Install npm
           command: |
-            cd frontend && npm install
+            cd frontend
+            npm install
       - run:
           name: Build front-end
           command: |
-            cd frontend && npm run build
+            cd frontend
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      # - persist_to_workspace:
-      #     root: ~/UdaPeople
-      #     paths:
-      #       - frontend/*
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
-    # working_directory: ~/UdaPeople
     steps:
       - checkout
       - restore_cache:
@@ -72,32 +68,24 @@ jobs:
       - run:
           name: Install npm
           command: |
-            cd backend && npm install
+            cd backend
+            npm install
       - run:
           name: Back-end build
           command: |
-            cd backend && npm run build
+            cd backend
+            npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      # - persist_to_workspace:
-      #     root: ~/UdaPeople
-      #     paths:
-      #       - backend/*
 
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
-    # working_directory: ~/UdaPeople
     steps:
-      # - attach_workspace:
-      #     at: ~/UdaPeople
-      # Checkout code from git
       - checkout
-      # Restore from cache
       - restore_cache:
           keys: [frontend-build]
-      # Your job code here
       - run:
           name: Front-end test
           command: |
@@ -108,16 +96,10 @@ jobs:
   test-backend:
     docker:
       - image: circleci/node:13.8.0
-    # working_directory: ~/UdaPeople
     steps:
-      # - attach_workspace:
-      #     at: ~/UdaPeople
-      # Checkout code from git
       - checkout
-      # Restore from cache
       - restore_cache:
           keys: [backend-build]
-      # Your job code here
       - run:
           name: Back-end test
           command: |
@@ -128,16 +110,10 @@ jobs:
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
-    # working_directory: ~/UdaPeople
     steps:
-      # Checkout code from git
       - checkout
-      # - attach_workspace:
-      #     at: ~/UdaPeople
-      # Restore from cache
       - restore_cache:
           keys: [frontend-build]
-      # Your job code here
       - run:
           name: Front-end scan
           command: |
@@ -148,16 +124,10 @@ jobs:
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
-    # working_directory: ~/UdaPeople
     steps:
-      # Checkout code from git
       - checkout
-      # - attach_workspace:
-      #     at: ~/UdaPeople
-      # Restore from cache
       - restore_cache:
           keys: [backend-build]
-      # Your job code here
       - run:
           name: Back-end scan
           command: |
@@ -204,20 +174,15 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
       - destroy-environment
 
   configure-infrastructure:
     docker:
-      # Docker image here that supports Ansible
       - image: python:3.7-alpine3.11
     steps:
-      # Checkout code from git
       - checkout
-      # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
-      # attach workspace
       - attach_workspace:
           at: ~/project/.circleci/ansible
       - run:
@@ -240,6 +205,8 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
+            export ANSIBLE_HOST_KEY_CHECKING=False
+            export ANSIBLE_RECORD_HOST_KEYS=False
             ansible-playbook -i inventory.txt configure-server.yml
       #- destroy-environment     
 
@@ -387,8 +354,8 @@ workflows:
               only: [test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
