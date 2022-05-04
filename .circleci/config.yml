@@ -242,8 +242,7 @@ jobs:
           command: |
             curl --silent --location https://rpm.nodesource.com/setup_14.x | bash -
             yum install -y nodejs
-            yum install tar
-            yum update tar
+            yum install -y tar gzip
       - run:
           name: Get backend url
           command: |
