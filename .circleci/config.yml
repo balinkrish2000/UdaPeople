@@ -6,6 +6,11 @@ commands:
     #parameters:
       # Add parameter here   
     steps:
+      - run: Empty S3 bucket
+          name: Destroy front end s3 bucket
+          when: on_fail
+          command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - run:
           name: Destroy environments frontend
           when: on_fail
@@ -16,12 +21,6 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-      # - run:
-      #     name: Destroy front end s3 bucket
-      #     when: on_fail
-      #     command: |
-      #       aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      #       aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force  
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -377,6 +376,7 @@ jobs:
       
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
+              aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
               aws cloudformation delete-stack --stack-name UdaPeople-frontend-${OldWorkflowID}
               aws cloudformation delete-stack --stack-name UdaPeople-backend-${OldWorkflowID}
             fi
