@@ -139,22 +139,22 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: Ensure back-end infrastructure exists
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/backend.yml \
-      #         --tags project=your-tag \
-      #         --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
-      # - run:
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         --tags project=your-tag \
-      #         --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project=your-tag \
+              --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=your-tag \
+              --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -178,8 +178,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      # - image: python:3.7-alpine3.11
-      - image: cimg/base:2021.04
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
@@ -191,25 +190,14 @@ jobs:
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
       - run:
-          name: Install dependencies
+          name: install dependencies
           command: |
-            sudo apt-get install ansible
-      #     command: |
-      #       apk update
-      #       apk upgrade
-      #       apk add unzip
-      #       apk add curl
-      #       /usr/local/bin/python -m pip install --upgrade pip
-      #       apk add --update ansible
-      #       ansible --version
-      #       pip install awscli --upgrade
-      #       aws --version
+            apk add --update ansible
+            pip install awscli --upgrade
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
-            export ANSIBLE_HOST_KEY_CHECKING=False
-            export ANSIBLE_RECORD_HOST_KEYS=False
             ansible-playbook -i inventory.txt configure-server.yml
       #- destroy-environment     
 
