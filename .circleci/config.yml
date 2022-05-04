@@ -6,8 +6,8 @@ commands:
     #parameters:
       # Add parameter here   
     steps:
-      - run: Empty S3 bucket
-          name: Destroy front end s3 bucket
+      - run: 
+          name: Empty S3 bucket
           when: on_fail
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
