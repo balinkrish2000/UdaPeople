@@ -310,7 +310,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl nodejs npm
-            pip install awscli --upgrade
+            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
       - attach_workspace:
           at: ~/project/.circleci/ansible
       - run:
