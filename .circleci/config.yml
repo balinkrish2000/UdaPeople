@@ -280,7 +280,7 @@ jobs:
           command: |
             apk add --update ansible
             pip install awscli --upgrade
-            apk add --no-cache nodejs
+            pip install npm
       - run:
           name: Deploy backend
           command: |
