@@ -139,22 +139,22 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: Ensure back-end infrastructure exists
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/backend.yml \
-      #         --tags project=your-tag \
-      #         --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
-      # - run:
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         --tags project=your-tag \
-      #         --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project=your-tag \
+              --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=your-tag \
+              --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -182,7 +182,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["ff:60:a1:9a:83:3b:85:8e:b2:2f:a3:3c:5e:b3:04:19"]
+          fingerprints: ["0c:3f:13:11:ce:38:a7:5f:58:d1:78:33:94:c8:11:ff"]
       - attach_workspace:
           at: ~/project/.circleci/ansible
       - run:
