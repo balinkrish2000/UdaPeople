@@ -193,7 +193,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get install ansible
+            sudo apt-get install ansible
       #     command: |
       #       apk update
       #       apk upgrade
