@@ -189,8 +189,10 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      # - run:
-      #     name: Install dependencies
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
       #     command: |
       #       apk update
       #       apk upgrade
