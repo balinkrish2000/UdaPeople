@@ -178,7 +178,8 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      # - image: python:3.7-alpine3.11
+      - image: circleci/python:3.6.4
     steps:
       - checkout
       - add_ssh_keys:
@@ -189,10 +190,10 @@ jobs:
           name: print inventory file
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       apk add --no-cache ansible
+      - run:
+          name: Install dependencies
+          command: |
+            pip install ansible
       #     command: |
       #       apk update
       #       apk upgrade
