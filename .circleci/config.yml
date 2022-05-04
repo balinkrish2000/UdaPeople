@@ -271,6 +271,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - add_ssh_keys:
           fingerprints: ["0c:3f:13:11:ce:38:a7:5f:58:d1:78:33:94:c8:11:ff"]
       - attach_workspace:
