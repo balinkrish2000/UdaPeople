@@ -122,7 +122,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit fix
+            npm audit fix --audit-level=critical --force
 
   scan-backend:
     docker:
@@ -135,7 +135,7 @@ jobs:
           name: Back-end scan
           command: |
             cd backend
-            npm audit fix
+            npm audit fix --audit-level=critical --force
 
   deploy-infrastructure:
     docker:
@@ -169,7 +169,7 @@ jobs:
           command: |
             aws ec2 describe-instances \
             --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --query 'Reservations[*].Instances[*].PublicDnsName' \
             --output text >> .circleci/ansible/inventory.txt
       - run:
           name: Install tar utility
