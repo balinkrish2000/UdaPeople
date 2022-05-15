@@ -51,6 +51,7 @@ jobs:
           name: Install npm
           command: |
             cd frontend
+            npm cache clean --force
             npm install
             npm audit fix --audit-level=critical --force
       - run:
@@ -73,6 +74,7 @@ jobs:
           name: Install npm
           command: |
             cd backend
+            npm cache clean --force
             npm install
             npm audit fix --audit-level=critical --force
       - run:
