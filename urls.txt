@@ -1,0 +1,7 @@
+[URL01] Public Url to GitHub repository - https://github.com/balinkrish2000/UdaPeople.git
+[URL02] Deploy Front End S3 Bucket URL http://udapeople-5ad88bb.s3-website-us-east-1.amazonaws.com
+[URL03] CloudFront working app URL - http://d1wummnnmrnx95.cloudfront.net
+[URL04] Backend API URL - http://ec2-34-228-80-84.compute-1.amazonaws.com/api/status
+[URL05] Prometheus Server - http://ec2-54-90-126-86.compute-1.amazonaws.com:9090/targets
+
+
