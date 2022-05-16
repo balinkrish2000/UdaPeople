@@ -135,6 +135,7 @@ jobs:
           name: Back-end scan
           command: |
             cd backend
+            npm install
             npm audit fix
 
   deploy-infrastructure:
