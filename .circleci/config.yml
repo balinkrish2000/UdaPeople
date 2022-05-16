@@ -270,6 +270,7 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
+            cat frontend/.env
             cd frontend
             npm install
             npm audit fix
