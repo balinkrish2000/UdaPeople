@@ -255,7 +255,6 @@ jobs:
             curl --silent --location https://rpm.nodesource.com/setup_14.x | bash -
             yum install -y nodejs
             yum install -y tar gzip
-            npm install webpack-dev-server -g
       - attach_workspace:
           at: ~/project/.circleci/ansible
       - run:
